@@ -34,7 +34,7 @@ const putBirthday = async (event, context, callback) => {
                 dateOfBirth: Date(body.dateOfBirth).format('YYYY-mm-dd')
             }
         })
-
+        console.log("Successfully stored in DB")
         callback(null, generateResponse(200, {
             put
         }))
@@ -58,7 +58,7 @@ const getBirthday = async (event, context, callback) => {
 
 
         if(get.Count === 0) {
-            callback(null, generateResponse(404, "No record found for that person"))
+            callback(null, generateResponse(404, "No record found!"))
         }
 
         callback(null, generateResponse(200, {
