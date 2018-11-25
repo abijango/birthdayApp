@@ -44,12 +44,11 @@ const generateResponse = (status, body) => {
 }
 const handler = async (event, context) => {
     try {
-      response = generateResponse(204, { "dateOfBirth": "2001-01-01" })
+      response = generateResponse(200, { "dateOfBirth": "2001-01-01" })
     } catch (err) {
         console.log(err);
         return err;
     }
-
     return response
 };
 
