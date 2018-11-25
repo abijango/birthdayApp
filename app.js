@@ -1,4 +1,4 @@
-//export AWS_XRAY_CONTEXT_MISSING=LOG_ERROR
+
 const AWSXRay = require('aws-xray-sdk-core'),
     AWS = AWSXRay.captureAWS(require('aws-sdk'));
 
@@ -58,7 +58,7 @@ const getBirthday = async (event, context, callback) => {
 
 
         if(get.Count === 0) {
-            callback(null, generateResponse(404, "No record found for that name"))
+            callback(null, generateResponse(404, "No record found for that person"))
         }
 
         callback(null, generateResponse(200, {
