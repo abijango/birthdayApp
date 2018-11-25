@@ -2,10 +2,18 @@
 // const AWSXRay = require('aws-xray-sdk-core'),
 const  AWS = require('aws-sdk');
 
-const documentClient = new AWS.DynamoDB.DocumentClient({ region: 'eu-west-1', endpoint: 'http://localhost:4569', convertEmptyValues: true });
+const documentClient = new AWS.DynamoDB.DocumentClient({
+    region: process.env.AWS_REGION,
+    endpoint: process.env.DYNAMODB_ENDPOINT || undefined,
+    convertEmptyValues: true
+});
 
 const dynamoPut = (params) => {
-    return documentClient.put(params).promise()
+    return documentClient.put(params).promise().catch(err => console.log(err))
+}
+
+const dynamoQuery = (params) => {
+    return documentClient.query(params).promise().catch(err => console.log(err))
 }
 
 const generateResponse = (status, body) => {
@@ -17,24 +25,56 @@ const generateResponse = (status, body) => {
 
 let response;
 
-const handler = async (event, context, callback) => {
+const putTask = async (event, context, callback) => {
     try {
-
-      await dynamoPut({TableName: "birthdays", Item: {Id: "101"} })
-      response = generateResponse(200, {
-        "dateOfBirth": "2001-01-01"
+      const body = JSON.parse(event.body)
+      const dOB = Date(body.dateOfBirth).format("YYYY-mm-dd")
+      const put = await dynamoPut({
+        TableName: 'birthdays',
+        Item: {
+          Id: String(event.pathParameters.userId),
+          dateOfBirth: body.dateOfBirth
+        }
       })
+
+      //return the returned value
+      callback(null, generateResponse(204, {
+        put
+      }))
 
     } catch (err) {
         console.log(err);
-        return err;
+        callback(null, generateResponse(500, {
+          err
+        }))
+    }
+};
+const getTask = async (event, context, callback) => {
+    try {
+      const get = await dynamoQuery({
+        TableName: 'birthdays',
+        KeyConditionExpression: 'Id = :id',
+        ExpressionAttributeValues: {
+          ':id': String(event.pathParameters.userId)
+        }
+      })
+      // const dOB = Date(get.dateOfBirth).format("YYYY-mm-dd")
+      //return the returned value
+      callback(null, generateResponse(204, {
+        get
+      }))
+    } catch (err) {
+        console.log(err);
+        callback(null, generateResponse(500, {
+          err
+        }))
     }
 };
 
-
 module.exports = {
-  handler,
+  getTask,
+  putTask,
   generateResponse
 }
 
-handler()
+// handler()
