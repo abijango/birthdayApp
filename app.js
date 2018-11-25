@@ -36,8 +36,8 @@ let response;
  * @returns {Object} object.body - JSON Payload to be returned
  *
  */
-const generateResponse = (status, body) ==> {
-  return = {
+const generateResponse = (status, body) => {
+  return {
       'statusCode': status,
       'body': JSON.stringify(body)
   }
