@@ -19,6 +19,7 @@ const handler = async (event, context, callback) => {
 
       await dynamoPut({TableName: "", Item: {Id: 101} })
       response = generateResponse(200, { "dateOfBirth": "2001-01-01" })
+      
     } catch (err) {
         console.log(err);
         return err;
