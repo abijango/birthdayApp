@@ -42,7 +42,7 @@ const generateResponse = (status, body) ==> {
       'body': JSON.stringify(body)
   }
 }
-exports.lambdaHandler = async (event, context) => {
+const handler = async (event, context) => {
     try {
       response = generateResponse(204, { "dateOfBirth": "2001-01-01" })
     } catch (err) {
@@ -52,3 +52,8 @@ exports.lambdaHandler = async (event, context) => {
 
     return response
 };
+
+
+module.exports = {
+  handler
+}
