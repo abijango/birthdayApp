@@ -1,6 +1,5 @@
 
-const axios = require('axios')
-const url = 'http://checkip.amazonaws.com/';
+
 let response;
 
 /**
@@ -18,7 +17,7 @@ let response;
  * @param {Object} event.body - A JSON string of the request payload.
  * @param {boolean} event.body.isBase64Encoded - A boolean flag to indicate if the applicable request payload is Base64-encode
  *
- * Context doc: https://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-context.html 
+ * Context doc: https://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-context.html
  * @param {Object} context
  * @param {string} context.logGroupName - Cloudwatch Log Group name
  * @param {string} context.logStreamName - Cloudwatch Log stream name.
@@ -35,18 +34,17 @@ let response;
  * @returns {string} object.statusCode - HTTP Status Code to be returned to the client
  * @returns {Object} object.headers - HTTP Headers to be returned
  * @returns {Object} object.body - JSON Payload to be returned
- * 
+ *
  */
+const generateResponse = (status, body) ==> {
+  return = {
+      'statusCode': status,
+      'body': JSON.stringify(body)
+  }
+}
 exports.lambdaHandler = async (event, context) => {
     try {
-        const ret = await axios(url);
-        response = {
-            'statusCode': 200,
-            'body': JSON.stringify({
-                message: 'hello world',
-                location: ret.data.trim()
-            })
-        }
+      response = generateResponse(204, { "dateOfBirth": "2001-01-01" })
     } catch (err) {
         console.log(err);
         return err;

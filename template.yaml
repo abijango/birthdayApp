@@ -4,7 +4,7 @@ Description: >
     birthdayApp
 
     Sample SAM Template for birthdayApp
-    
+
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
     Function:
@@ -13,10 +13,9 @@ Globals:
 
 Resources:
 
-    HelloWorldFunction:
+    getBirthdayFunction:
         Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
         Properties:
-            CodeUri: hello_world/
             Handler: app.lambdaHandler
             Runtime: nodejs8.10
             Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
@@ -26,7 +25,7 @@ Resources:
                 HelloWorld:
                     Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
                     Properties:
-                        Path: /hello
+                        Path: /hello{id}
                         Method: get
 
 Outputs:
